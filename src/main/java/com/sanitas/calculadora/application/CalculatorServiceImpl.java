@@ -1,5 +1,6 @@
 package com.sanitas.calculadora.application;
 
+import io.corp.calculator.TracerImpl;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -7,6 +8,8 @@ import java.util.Arrays;
 
 @Service
 public class CalculatorServiceImpl implements CalculatorService {
+
+    private TracerImpl tracer;
 
     @Override
     public BigDecimal calculate(BigDecimal firstOperator, BigDecimal secondOperator, String operationType) {
@@ -26,7 +29,7 @@ public class CalculatorServiceImpl implements CalculatorService {
                 }
             }
         } catch (Exception ex) {
-
+            tracer.trace(ex);
         }
 
         return null;

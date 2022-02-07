@@ -1,6 +1,7 @@
 package com.sanitas.calculadora.infrastructure;
 
 import com.sanitas.calculadora.application.CalculatorService;
+import io.corp.calculator.TracerImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +19,18 @@ public class CalculatorController {
 
     private final CalculatorService calculatorService;
 
+    private TracerImpl tracer;
 
     @GetMapping("/calculate")
-    public ResponseEntity<String> calcular(@RequestParam BigDecimal firstOperator,
+    public ResponseEntity<BigDecimal> calcular(@RequestParam BigDecimal firstOperator,
                                                @RequestParam BigDecimal secondOperator,
                                                @RequestParam String operation) {
 
         BigDecimal result = calculatorService.calculate(firstOperator, secondOperator, operation);
         if (result != null) {
-            return new ResponseEntity<>(result.toString(), HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
-        return new ResponseEntity<>("ERROR", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 
     }
 
